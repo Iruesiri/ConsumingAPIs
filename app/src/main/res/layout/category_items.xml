@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <androidx.cardview.widget.CardView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="10dp"
+        app:cardCornerRadius="20dp"
+        tools:context=".view.LoginRedirectActivity"
+        android:layout_centerVertical="true">
+
+    <LinearLayout
+        android:layout_width="350dp"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:layout_margin="10dp"
+        android:paddingHorizontal="10dp">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:scaleType="fitXY"
+            android:id="@+id/categoryImage"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/categoryName"
+            android:text=""
+            android:textSize="16sp"
+            android:textAllCaps="true"
+            android:textColor="@color/black"
+            android:gravity="center_horizontal"
+            android:layout_marginBottom="4dp" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:id="@+id/empty"
+            android:background="@color/design_default_color_primary"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/description"
+            android:text=""
+            android:textSize="16sp"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="4"
+            android:layout_margin="10dp">
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Add"
+                android:textColor="@color/design_default_color_primary_variant"
+                android:background="@color/design_default_color_background"
+                android:drawableLeft="@drawable/ic_baseline_add_24"
+                android:layout_weight="1"
+                android:id="@+id/btnAdd"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="View"
+                android:textColor="@color/design_default_color_primary_variant"
+                android:background="@color/design_default_color_background"
+                android:drawableLeft="@drawable/ic_baseline_person_24"
+                android:layout_weight="1"
+                android:id="@+id/btnView"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Edit"
+                android:textColor="@color/teal_700"
+                android:background="@color/design_default_color_background"
+                android:drawableLeft="@drawable/ic_baseline_edit_24"
+                android:layout_weight="1"
+                android:id="@+id/btnEdit"/>
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Delete"
+                android:textColor="@color/design_default_color_error"
+                android:background="@color/design_default_color_background"
+                android:layout_weight="1"
+                android:drawableLeft="@drawable/ic_baseline_delete_24"
+                android:id="@+id/btnDelete"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+    </androidx.cardview.widget.CardView>
+

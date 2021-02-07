@@ -1,0 +1,69 @@
+package com.example.crudapplication.view;
+
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.databinding.DataBindingUtil;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import android.os.Bundle;
+import android.util.Log;
+import android.widget.Toast;
+
+import com.example.crudapplication.R;
+import com.example.crudapplication.adapter.ProductAdapter;
+import com.example.crudapplication.callbacks.ApiService;
+import com.example.crudapplication.callbacks.SharedPreferenceClass;
+import com.example.crudapplication.databinding.ActivityViewProductBinding;
+import com.example.crudapplication.model.CategoryResponse;
+import com.example.crudapplication.model.LoginDetails;
+import com.example.crudapplication.network.ClientInstance;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
+public class ViewProductActivity extends AppCompatActivity {
+    private static final String TAG = "TAG";
+    ActivityViewProductBinding binding;
+    private RecyclerView recyclerView;
+    SharedPreferenceClass preference;
+    ProductAdapter adapter;
+    LoginDetails details;
+    ApiService apiService;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_view_product);
+        recyclerView = binding.recycler;
+
+        preference = new SharedPreferenceClass(this);
+        preference.checkLogin();
+        details = preference.getUserDetail();
+        apiService = ClientInstance.getService(details.getToken());
+
+        Call<CategoryResponse> call = apiService.getAllProductDetails();
+        call.enqueue(new Callback<CategoryResponse>() {
+
+            @Override
+            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+                Toast.makeText(ViewProductActivity.this, "Success", Toast.LENGTH_SHORT).show();
+                Log.d(TAG, "onResponse: " + response.body());
+                generateProductList(response.body());
+            }
+
+            @Override
+            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+                Toast.makeText(ViewProductActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+    }
+
+    private void generateProductList(CategoryResponse response) {
+        adapter = new ProductAdapter(this,response);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(ViewProductActivity.this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(adapter);
+    }
+}
