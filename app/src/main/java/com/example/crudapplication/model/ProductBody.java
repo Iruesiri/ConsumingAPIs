@@ -1,6 +1,6 @@
 package com.example.crudapplication.model;
 
-public class ProductDetails {
+public class ProductBody {
     public String categoryId;
     public String categoryName;
     public String productName;
@@ -12,8 +12,8 @@ public class ProductDetails {
     public String productShortDescription;
     public String productFullDescription;
 
-    public ProductDetails(String categoryId, String categoryName, String productName, String productVatAmount, String warranty,
-                          String commonName, String productAmount, String productDiscount, String productShortDescription, String productFullDescription){
+    public ProductBody(String categoryId, String categoryName, String productName, String productVatAmount, String warranty,
+                       String commonName, String productAmount, String productDiscount, String productShortDescription, String productFullDescription){
         this.categoryId = categoryId;
         this.categoryName = categoryName;
         this.commonName = commonName;

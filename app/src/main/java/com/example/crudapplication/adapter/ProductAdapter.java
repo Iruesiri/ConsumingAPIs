@@ -10,13 +10,14 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.crudapplication.R;
-import com.example.crudapplication.model.CategoryResponse;
+import com.example.crudapplication.model.ApiResponse;
+import com.example.crudapplication.model.ProductApiResponse;
 
 public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.viewHolder>{
-    private CategoryResponse response;
+    private ProductApiResponse response;
     private Context context;
 
-    public ProductAdapter(Context context, CategoryResponse response){
+    public ProductAdapter(Context context, ProductApiResponse response){
         this.context = context;
         this.response = response;
     }
@@ -30,14 +31,14 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.viewHold
 
     @Override
     public void onBindViewHolder(@NonNull ProductAdapter.viewHolder holder, int position) {
-        holder.categoryName.setText(response.responseEntity.productDetails.get(position).categoryName);
-        holder.productName.setText(response.responseEntity.productDetails.get(position).productName);
-        holder.commonName.setText(response.responseEntity.productDetails.get(position).commonName);
-        holder.productVat.setText(response.responseEntity.productDetails.get(position).productVatAmount);
-        holder.productAmount.setText(response.responseEntity.productDetails.get(position).productAmount);
-        holder.warranty.setText(response.responseEntity.productDetails.get(position).warranty);
-        holder.shortDescription.setText(response.responseEntity.productDetails.get(position).productShortDescription);
-        holder.longDescription.setText(response.responseEntity.productDetails.get(position).productFullDescription);
+        holder.categoryName.setText(response.responseEntity.body.get(position).categoryName);
+        holder.productName.setText(response.responseEntity.body.get(position).productName);
+        holder.commonName.setText(response.responseEntity.body.get(position).commonName);
+        holder.productVat.setText(response.responseEntity.body.get(position).productVatAmount);
+        holder.productAmount.setText(response.responseEntity.body.get(position).productAmount);
+        holder.warranty.setText(response.responseEntity.body.get(position).warranty);
+        holder.shortDescription.setText(response.responseEntity.body.get(position).productShortDescription);
+        holder.longDescription.setText(response.responseEntity.body.get(position).productFullDescription);
     }
 
     @Override

@@ -5,20 +5,17 @@ import androidx.databinding.DataBindingUtil;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
-import com.example.crudapplication.MainActivity;
 import com.example.crudapplication.R;
 import com.example.crudapplication.callbacks.ApiService;
 import com.example.crudapplication.callbacks.SharedPreferenceClass;
 import com.example.crudapplication.databinding.ActivityCreateCategoryBinding;
-import com.example.crudapplication.model.Body;
+import com.example.crudapplication.model.CategoryBody;
 import com.example.crudapplication.model.LoginDetails;
 import com.example.crudapplication.network.ClientInstance;
 
-import okhttp3.Headers;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -46,10 +43,10 @@ public class CreateCategoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 categoryName = binding.addName.getText().toString();
                 categoryDescription = binding.addDescription.getText().toString();
-                Body body = new Body(categoryName, categoryDescription);
+                CategoryBody categoryBody = new CategoryBody(categoryName, categoryDescription);
 
                 if (!(categoryName.isEmpty()) && !(categoryDescription.isEmpty())){
-                    Call<ResponseBody> request = apiService.createCategory(body);
+                    Call<ResponseBody> request = apiService.createCategory(categoryBody);
                     request.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -14,7 +14,7 @@ import com.example.crudapplication.callbacks.CategorySharedPreference;
 import com.example.crudapplication.callbacks.SharedPreferenceClass;
 import com.example.crudapplication.databinding.ActivityAddProductBinding;
 import com.example.crudapplication.model.LoginDetails;
-import com.example.crudapplication.model.ProductDetails;
+import com.example.crudapplication.model.ProductBody;
 import com.example.crudapplication.network.ClientInstance;
 
 import java.util.HashMap;
@@ -58,8 +58,8 @@ public class AddProductActivity extends AppCompatActivity {
                 productShortDescription = binding.productShortDescription.getText().toString();
                 productFullDescription = binding.productFullDescription.getText().toString();
 
-                ProductDetails productDetails = new ProductDetails(categoryId, categoryName, productName, productVatAmount, warranty, commonName, productAmount, productDiscount, productShortDescription, productFullDescription);
-                Call<ResponseBody> request = apiService.createProduct(productDetails);
+                ProductBody productBody = new ProductBody(categoryId, categoryName, productName, productVatAmount, warranty, commonName, productAmount, productDiscount, productShortDescription, productFullDescription);
+                Call<ResponseBody> request = apiService.createProduct(productBody);
                 request.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

@@ -14,8 +14,9 @@ import com.example.crudapplication.adapter.ProductAdapter;
 import com.example.crudapplication.callbacks.ApiService;
 import com.example.crudapplication.callbacks.SharedPreferenceClass;
 import com.example.crudapplication.databinding.ActivityViewProductBinding;
-import com.example.crudapplication.model.CategoryResponse;
+import com.example.crudapplication.model.ApiResponse;
 import com.example.crudapplication.model.LoginDetails;
+import com.example.crudapplication.model.ProductApiResponse;
 import com.example.crudapplication.network.ClientInstance;
 
 import retrofit2.Call;
@@ -42,25 +43,25 @@ public class ViewProductActivity extends AppCompatActivity {
         details = preference.getUserDetail();
         apiService = ClientInstance.getService(details.getToken());
 
-        Call<CategoryResponse> call = apiService.getAllProductDetails();
-        call.enqueue(new Callback<CategoryResponse>() {
+        Call<ProductApiResponse> call = apiService.getAllProductDetails();
+        call.enqueue(new Callback<ProductApiResponse>() {
 
             @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+            public void onResponse(Call<ProductApiResponse> call, Response<ProductApiResponse> response) {
                 Toast.makeText(ViewProductActivity.this, "Success", Toast.LENGTH_SHORT).show();
                 Log.d(TAG, "onResponse: " + response.body());
                 generateProductList(response.body());
             }
 
             @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+            public void onFailure(Call<ProductApiResponse> call, Throwable t) {
                 Toast.makeText(ViewProductActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
 
     }
 
-    private void generateProductList(CategoryResponse response) {
+    private void generateProductList(ProductApiResponse response) {
         adapter = new ProductAdapter(this,response);
         LinearLayoutManager layoutManager = new LinearLayoutManager(ViewProductActivity.this);
         recyclerView.setLayoutManager(layoutManager);

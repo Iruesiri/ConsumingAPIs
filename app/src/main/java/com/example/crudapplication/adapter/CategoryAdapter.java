@@ -16,18 +16,19 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.crudapplication.R;
 import com.example.crudapplication.callbacks.CategorySharedPreference;
-import com.example.crudapplication.model.CategoryResponse;
+import com.example.crudapplication.model.ApiResponse;
+import com.example.crudapplication.model.CategoryApiResponse;
 import com.example.crudapplication.view.AddProductActivity;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.viewHolder> {
     private static final String TAG = "TAG";
-    private CategoryResponse response;
+    private CategoryApiResponse response;
     private Context context;
     CategorySharedPreference manager;
 
-    public CategoryAdapter(Context context, CategoryResponse response){
+    public CategoryAdapter(Context context, CategoryApiResponse response){
         this.context = context;
         this.response = response;
     }

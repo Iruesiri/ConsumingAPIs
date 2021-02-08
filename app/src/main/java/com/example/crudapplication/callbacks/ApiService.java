@@ -1,9 +1,12 @@
 package com.example.crudapplication.callbacks;
 
-import com.example.crudapplication.model.CategoryResponse;
+import com.example.crudapplication.model.ApiResponse;
+import com.example.crudapplication.model.CategoryApiResponse;
+import com.example.crudapplication.model.CategoryBody;
 import com.example.crudapplication.model.ImageUpload;
 import com.example.crudapplication.model.LoginDetails;
-import com.example.crudapplication.model.ProductDetails;
+import com.example.crudapplication.model.ProductApiResponse;
+import com.example.crudapplication.model.ProductBody;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -17,19 +20,19 @@ public interface ApiService {
 
     //get all category
     @GET("category")
-    Call<CategoryResponse> getCategoryDetails();
+    Call<CategoryApiResponse> getCategoryDetails();
 
     //create category
     @POST("category")
-    Call<ResponseBody> createCategory(@Body com.example.crudapplication.model.Body body);
+    Call<ResponseBody> createCategory(@Body CategoryBody categoryBody);
 
     //Create product
     @POST("product")
-    Call<ResponseBody> createProduct(@Body ProductDetails productDetails);
+    Call<ResponseBody> createProduct(@Body ProductBody productBody);
 
     //get all products
     @GET("product/0/5")
-    Call<CategoryResponse> getAllProductDetails();
+    Call<ProductApiResponse> getAllProductDetails();
 
     //get products by id/category
     //@GET("product")

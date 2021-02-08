@@ -3,8 +3,6 @@ package com.example.crudapplication.callbacks;
 import android.content.Context;
 import android.content.SharedPreferences;
 
-import com.example.crudapplication.model.Body;
-
 import java.util.HashMap;
 
 public class CategorySharedPreference {

@@ -7,10 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.Toast;
 
 import com.example.crudapplication.R;
@@ -18,7 +15,8 @@ import com.example.crudapplication.adapter.CategoryAdapter;
 import com.example.crudapplication.callbacks.ApiService;
 import com.example.crudapplication.callbacks.SharedPreferenceClass;
 import com.example.crudapplication.databinding.ActivityLoginRedirectBinding;
-import com.example.crudapplication.model.CategoryResponse;
+import com.example.crudapplication.model.ApiResponse;
+import com.example.crudapplication.model.CategoryApiResponse;
 import com.example.crudapplication.model.LoginDetails;
 import com.example.crudapplication.network.ClientInstance;
 
@@ -47,17 +45,17 @@ public class LoginRedirectActivity extends AppCompatActivity {
 
 
         apiService = ClientInstance.getService(details.getToken());
-        Call<CategoryResponse> call = apiService.getCategoryDetails();
-        call.enqueue(new Callback<CategoryResponse>() {
+        Call<CategoryApiResponse> call = apiService.getCategoryDetails();
+        call.enqueue(new Callback<CategoryApiResponse>() {
             @Override
-            public void onResponse(Call<CategoryResponse> call, Response<CategoryResponse> response) {
+            public void onResponse(Call<CategoryApiResponse> call, Response<CategoryApiResponse> response) {
                 //ResponseBody response1 = (ResponseBody) response.body();
                 bindings.displayUser.setText(String.format("Hello %s", details.getUsername()));
                 generateCategoryList(response.body());
             }
 
             @Override
-            public void onFailure(Call<CategoryResponse> call, Throwable t) {
+            public void onFailure(Call<CategoryApiResponse> call, Throwable t) {
                 Toast.makeText(LoginRedirectActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
@@ -78,7 +76,7 @@ public class LoginRedirectActivity extends AppCompatActivity {
         });
 
     }
-    private void generateCategoryList(CategoryResponse response){
+    private void generateCategoryList(CategoryApiResponse response){
         adapter = new CategoryAdapter(this,response);
         LinearLayoutManager layoutManager = new LinearLayoutManager(LoginRedirectActivity.this);
         recyclerView.setLayoutManager(layoutManager);

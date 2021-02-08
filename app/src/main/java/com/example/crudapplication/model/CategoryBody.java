@@ -2,7 +2,7 @@ package com.example.crudapplication.model;
 
 import android.net.Uri;
 
-public class Body {
+public class CategoryBody {
     public String categoryId;
     public String categoryName;
     public String categoryImageUrl;
@@ -18,7 +18,7 @@ public class Body {
     public String productShortDescription;
     public String productFullDescription;
 
-    public Body(String categoryName, String categoryDescription){
+    public CategoryBody(String categoryName, String categoryDescription){
         this.categoryName = categoryName;
         this.categoryDescription = categoryDescription;
     }

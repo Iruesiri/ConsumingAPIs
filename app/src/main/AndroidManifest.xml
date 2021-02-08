@@ -12,7 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
         <activity android:name=".view.ViewProductActivity"></activity>
-        <activity android:name=".view.AddImageActivity" />
+        <activity android:name=".view.AddImageActivity">
+
+        </activity>
         <activity android:name=".view.AddProductActivity" />
         <activity android:name=".view.CreateCategoryActivity" />
         <activity android:name=".view.LoginRedirectActivity" />
