@@ -56,7 +56,7 @@ public class ProductAdapter extends RecyclerView.Adapter<ProductAdapter.viewHold
             view = itemView;
 
             categoryName = view.findViewById(R.id.categoryName);
-            productName = view.findViewById(R.id.productName);
+            productName = view.findViewById(R.id.ProductName);
             productVat = view.findViewById(R.id.vat);
             productAmount = view.findViewById(R.id.productAmount);
             commonName = view.findViewById(R.id.commonname);

@@ -13,6 +13,7 @@ import com.example.crudapplication.callbacks.ApiService;
 import com.example.crudapplication.callbacks.CategorySharedPreference;
 import com.example.crudapplication.callbacks.SharedPreferenceClass;
 import com.example.crudapplication.databinding.ActivityAddProductBinding;
+import com.example.crudapplication.model.CategoryBody;
 import com.example.crudapplication.model.LoginDetails;
 import com.example.crudapplication.model.ProductBody;
 import com.example.crudapplication.network.ClientInstance;
@@ -37,7 +38,10 @@ public class AddProductActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_add_product);
         sharedPreference = new SharedPreferenceClass(this);
-        manager = new CategorySharedPreference(this);
+
+        Intent intent = getIntent();
+        categoryId = intent.getStringExtra("CategoryId");
+        categoryName = intent.getStringExtra("CategoryName");
 
         LoginDetails details = sharedPreference.getUserDetail();
         apiService = ClientInstance.getService(details.getToken());
@@ -45,9 +49,6 @@ public class AddProductActivity extends AppCompatActivity {
         binding.btnAddProduct.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                HashMap<String, String> user = manager.getUserDetails();
-                categoryId = user.get(CategorySharedPreference.CAT_ID);
-                categoryName = user.get(CategorySharedPreference.CAT_NAME);
 
                 productAmount = binding.amount.getText().toString();
                 productName = binding.productName.getText().toString();
@@ -63,7 +64,7 @@ public class AddProductActivity extends AppCompatActivity {
                 request.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                        if (response.code() == 200) {
+                        if (response.raw().code() == 200) {
                             Toast.makeText(AddProductActivity.this, "Successfully added", Toast.LENGTH_SHORT).show();
                             Intent intent = new Intent(AddProductActivity.this, LoginRedirectActivity.class);
                             startActivity(intent);

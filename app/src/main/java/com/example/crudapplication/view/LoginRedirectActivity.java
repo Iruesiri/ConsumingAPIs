@@ -13,6 +13,8 @@ import android.widget.Toast;
 import com.example.crudapplication.R;
 import com.example.crudapplication.adapter.CategoryAdapter;
 import com.example.crudapplication.callbacks.ApiService;
+import com.example.crudapplication.callbacks.CategoryAdapterClickListener;
+import com.example.crudapplication.callbacks.CategorySharedPreference;
 import com.example.crudapplication.callbacks.SharedPreferenceClass;
 import com.example.crudapplication.databinding.ActivityLoginRedirectBinding;
 import com.example.crudapplication.model.ApiResponse;
@@ -49,7 +51,6 @@ public class LoginRedirectActivity extends AppCompatActivity {
         call.enqueue(new Callback<CategoryApiResponse>() {
             @Override
             public void onResponse(Call<CategoryApiResponse> call, Response<CategoryApiResponse> response) {
-                //ResponseBody response1 = (ResponseBody) response.body();
                 bindings.displayUser.setText(String.format("Hello %s", details.getUsername()));
                 generateCategoryList(response.body());
             }
@@ -71,6 +72,7 @@ public class LoginRedirectActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(LoginRedirectActivity.this, ViewProductActivity.class);
+                intent.putExtra("CategoryId", "");
                 startActivity(intent);
             }
         });
@@ -78,20 +80,44 @@ public class LoginRedirectActivity extends AppCompatActivity {
     }
     private void generateCategoryList(CategoryApiResponse response){
         adapter = new CategoryAdapter(this,response);
+
+        adapter.setClickListener(new CategoryAdapterClickListener() {
+            @Override
+            public void addProduct(String categoryId, String categoryName) {
+                Intent intent = new Intent(LoginRedirectActivity.this, AddProductActivity.class);
+                intent.putExtra("CategoryId", categoryId);
+                intent.putExtra("CategoryName", categoryName);
+                startActivity(intent);
+            }
+
+            @Override
+            public void viewProduct(String categoryId) {
+                Intent intent = new Intent(LoginRedirectActivity.this, ViewProductActivity.class);
+                intent.putExtra("CategoryId", categoryId);
+                startActivity(intent);
+            }
+
+            @Override
+            public void updateProduct(String categoryId) {
+                Toast.makeText(LoginRedirectActivity.this, "Update", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void deleteProduct(String categoryId) {
+                Toast.makeText(LoginRedirectActivity.this, "Delete", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void uploadImage(String categoryId) {
+                Intent intent = new Intent(LoginRedirectActivity.this, ImageUploadActivity.class);
+                intent.putExtra("CategoryId", categoryId);
+                startActivity(intent);
+            }
+        });
+
+
         LinearLayoutManager layoutManager = new LinearLayoutManager(LoginRedirectActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setAdapter(adapter);
     }
-//    public void popupWindowOnClick(View view){
-//        LayoutInflater inflater = (LayoutInflater)
-//                getSystemService(LAYOUT_INFLATER_SERVICE);
-//        View popupView = inflater.inflate(R.layout.activity_create_category, null);
-//
-//        int width = LinearLayout.LayoutParams.WRAP_CONTENT;
-//        int height = LinearLayout.LayoutParams.WRAP_CONTENT;
-//
-//        boolean focusable = true; // lets taps outside the popup also dismiss it
-//        final PopupWindow popupWindow = new PopupWindow(popupView, width, height, focusable);
-//        popupWindow.showAtLocation(view, Gravity.CENTER, 0, 0);
-//    }
 }

@@ -27,6 +27,7 @@ public class CreateCategoryActivity extends AppCompatActivity {
     SharedPreferenceClass sharedPreference;
     ActivityCreateCategoryBinding binding;
     ApiService apiService;
+    CategoryBody body;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,17 +44,23 @@ public class CreateCategoryActivity extends AppCompatActivity {
             public void onClick(View v) {
                 categoryName = binding.addName.getText().toString();
                 categoryDescription = binding.addDescription.getText().toString();
-                CategoryBody categoryBody = new CategoryBody(categoryName, categoryDescription);
+
+                body = new CategoryBody(categoryName, categoryDescription);
 
                 if (!(categoryName.isEmpty()) && !(categoryDescription.isEmpty())){
-                    Call<ResponseBody> request = apiService.createCategory(categoryBody);
+                    Call<ResponseBody> request = apiService.createCategory(body);
                     request.enqueue(new Callback<ResponseBody>() {
                         @Override
                         public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
-                            String feedback = response.body().toString();
-                            Toast.makeText(CreateCategoryActivity.this, feedback, Toast.LENGTH_SHORT).show();
-                            Intent intent = new Intent(CreateCategoryActivity.this, LoginRedirectActivity.class);
-                            startActivity(intent);
+                            if (response.raw().code() == 200) {
+                                String feedback = response.body().toString();
+                                Toast.makeText(CreateCategoryActivity.this, feedback, Toast.LENGTH_SHORT).show();
+                                Intent intent = new Intent(CreateCategoryActivity.this, LoginRedirectActivity.class);
+                                startActivity(intent);
+                            }
+                            else {
+                                Toast.makeText(CreateCategoryActivity.this, "Not saved", Toast.LENGTH_SHORT).show();
+                            }
                         }
 
                         @Override

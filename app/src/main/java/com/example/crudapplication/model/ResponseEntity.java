@@ -8,10 +8,7 @@ import java.util.List;
 
 import okhttp3.Headers;
 
-public abstract class ResponseEntity<T> implements Serializable {
-    //public List<> headers;
-    //public List<Body> body;
-
+public class ResponseEntity<T> implements Serializable {
     @SerializedName("headers")
     @Expose
     public Headers headers;

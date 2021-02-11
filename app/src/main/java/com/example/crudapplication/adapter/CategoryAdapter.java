@@ -15,10 +15,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.crudapplication.R;
+import com.example.crudapplication.callbacks.CategoryAdapterClickListener;
 import com.example.crudapplication.callbacks.CategorySharedPreference;
 import com.example.crudapplication.model.ApiResponse;
 import com.example.crudapplication.model.CategoryApiResponse;
 import com.example.crudapplication.view.AddProductActivity;
+import com.example.crudapplication.view.ImageUploadActivity;
+import com.example.crudapplication.view.ViewProductActivity;
 import com.jakewharton.picasso.OkHttp3Downloader;
 import com.squareup.picasso.Picasso;
 
@@ -27,6 +30,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.viewHo
     private CategoryApiResponse response;
     private Context context;
     CategorySharedPreference manager;
+    CategoryAdapterClickListener clickListener;
 
     public CategoryAdapter(Context context, CategoryApiResponse response){
         this.context = context;
@@ -54,34 +58,36 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.viewHo
                 .error(R.drawable.ic_launcher_background)
                 .into(holder.categoryImage);
         Log.d(TAG, "onBindViewHolder: " + "http://app.kreer.ng/image/"+response.responseEntity.body.get(position).categoryImageUrl);
-        //holder.categoryImage.setText(response.responseEntity.body.get(position).categoryImageUrl);
 
-        manager = new CategorySharedPreference(context);
-        manager.storeCategoryDetails(categoryId, categoryName);
 
         holder.btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent = new Intent(context, AddProductActivity.class);
-                context.startActivity(intent);
+                clickListener.addProduct(categoryId, categoryName);
             }
         });
         holder.btnView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Boos", Toast.LENGTH_SHORT).show();
+                clickListener.viewProduct(categoryId);
             }
         });
         holder.btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Boo update", Toast.LENGTH_SHORT).show();
+                clickListener.updateProduct(categoryId);
             }
         });
         holder.btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Boo upgds", Toast.LENGTH_SHORT).show();
+                clickListener.deleteProduct(categoryId);
+            }
+        });
+        holder.btnImage.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                clickListener.uploadImage(categoryId);
             }
         });
     }
@@ -97,6 +103,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.viewHo
         TextView description;
         ImageView categoryImage;
         Button btnAdd, btnView, btnUpdate, btnDelete;
+        Button btnImage;
 
         viewHolder(View itemView) {
             super(itemView);
@@ -109,6 +116,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.viewHo
             btnView = view.findViewById(R.id.btnView);
             btnUpdate = view.findViewById(R.id.btnEdit);
             btnDelete = view.findViewById(R.id.btnDelete);
+            btnImage = view.findViewById(R.id.selectButton);
         }
+    }
+    public void setClickListener(CategoryAdapterClickListener clickListener){
+        this.clickListener = clickListener;
     }
 }

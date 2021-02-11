@@ -5,6 +5,7 @@ import androidx.databinding.DataBindingUtil;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -12,9 +13,10 @@ import android.widget.Toast;
 import com.example.crudapplication.R;
 import com.example.crudapplication.adapter.ProductAdapter;
 import com.example.crudapplication.callbacks.ApiService;
+import com.example.crudapplication.callbacks.CategorySharedPreference;
 import com.example.crudapplication.callbacks.SharedPreferenceClass;
 import com.example.crudapplication.databinding.ActivityViewProductBinding;
-import com.example.crudapplication.model.ApiResponse;
+import com.example.crudapplication.model.CategoryBody;
 import com.example.crudapplication.model.LoginDetails;
 import com.example.crudapplication.model.ProductApiResponse;
 import com.example.crudapplication.network.ClientInstance;
@@ -26,11 +28,12 @@ import retrofit2.Response;
 public class ViewProductActivity extends AppCompatActivity {
     private static final String TAG = "TAG";
     ActivityViewProductBinding binding;
+    CategorySharedPreference manager;
     private RecyclerView recyclerView;
     SharedPreferenceClass preference;
     ProductAdapter adapter;
-    LoginDetails details;
     ApiService apiService;
+    String categoryId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -38,12 +41,27 @@ public class ViewProductActivity extends AppCompatActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_view_product);
         recyclerView = binding.recycler;
 
+        Intent intent = getIntent();
+        categoryId = intent.getStringExtra("CategoryId");
+
         preference = new SharedPreferenceClass(this);
         preference.checkLogin();
-        details = preference.getUserDetail();
+        LoginDetails details = preference.getUserDetail();
         apiService = ClientInstance.getService(details.getToken());
 
-        Call<ProductApiResponse> call = apiService.getAllProductDetails();
+        Call<ProductApiResponse> call = apiService.getProductbyCategory(categoryId, 0, 5);
+        Log.d(TAG, "Category Id: " + categoryId);
+
+        Call<ProductApiResponse> call2 = apiService.getAllProductDetails();
+        if(categoryId.matches("")){
+            getProduct(call2);
+        }
+        else {
+            getProduct(call);
+        }
+    }
+
+    private void getProduct(Call<ProductApiResponse> call) {
         call.enqueue(new Callback<ProductApiResponse>() {
 
             @Override
@@ -58,7 +76,6 @@ public class ViewProductActivity extends AppCompatActivity {
                 Toast.makeText(ViewProductActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
             }
         });
-
     }
 
     private void generateProductList(ProductApiResponse response) {

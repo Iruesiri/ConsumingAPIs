@@ -3,6 +3,8 @@ package com.example.crudapplication.callbacks;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import com.example.crudapplication.model.CategoryBody;
+
 import java.util.HashMap;
 
 public class CategorySharedPreference {
@@ -27,18 +29,17 @@ public class CategorySharedPreference {
         editor.commit();
     }
 
-    public HashMap<String, String> getUserDetails() {
-        HashMap<String, String> user = new HashMap<String, String>();
-        user.put(CAT_ID, preferences.getString(CAT_ID, ""));
-        user.put(CAT_NAME, preferences.getString(CAT_NAME, ""));
-        return user;
-    }
+//    public HashMap<String, String> getUserDetails() {
+//        HashMap<String, String> user = new HashMap<String, String>();
+//        user.put(CAT_ID, preferences.getString(CAT_ID, ""));
+//        user.put(CAT_NAME, preferences.getString(CAT_NAME, ""));
+//        return user;
+//    }
 
-//        public UserDetails getUserDetail() {
-//            UserDetails userDetails = new UserDetails();
-//            userDetails.setUserId(preferences.getString(USER_ID, ""));
-//            userDetails.setFirst_name(preferences.getString(FIRST_NAME, ""));
-//            userDetails.setToken(preferences.getString(TOKEN, ""));
-//            return userDetails;
-//        }
+        public CategoryBody getCategoryDetail() {
+            CategoryBody categoryBody = new CategoryBody();
+            categoryBody.setCategoryId(preferences.getString(CAT_ID, ""));
+            categoryBody.setCategoryName(preferences.getString(CAT_NAME, ""));
+            return categoryBody;
+        }
 }
