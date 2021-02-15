@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
@@ -15,6 +16,8 @@ import com.example.crudapplication.adapter.CategoryAdapter;
 import com.example.crudapplication.callbacks.ApiService;
 import com.example.crudapplication.callbacks.CategoryAdapterClickListener;
 import com.example.crudapplication.callbacks.CategorySharedPreference;
+import com.example.crudapplication.callbacks.CustomApiCallback;
+import com.example.crudapplication.callbacks.CustomApiCallbackImpl;
 import com.example.crudapplication.callbacks.SharedPreferenceClass;
 import com.example.crudapplication.databinding.ActivityLoginRedirectBinding;
 import com.example.crudapplication.model.ApiResponse;
@@ -46,20 +49,7 @@ public class LoginRedirectActivity extends AppCompatActivity {
         details = preference.getUserDetail();
 
 
-        apiService = ClientInstance.getService(details.getToken());
-        Call<CategoryApiResponse> call = apiService.getCategoryDetails();
-        call.enqueue(new Callback<CategoryApiResponse>() {
-            @Override
-            public void onResponse(Call<CategoryApiResponse> call, Response<CategoryApiResponse> response) {
-                bindings.displayUser.setText(String.format("Hello %s", details.getUsername()));
-                generateCategoryList(response.body());
-            }
-
-            @Override
-            public void onFailure(Call<CategoryApiResponse> call, Throwable t) {
-                Toast.makeText(LoginRedirectActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
-            }
-        });
+        getCategoryApiCall();
 
         bindings.addCategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,6 +68,54 @@ public class LoginRedirectActivity extends AppCompatActivity {
         });
 
     }
+
+    private void getCategoryApiCall(){
+        apiService = ClientInstance.getService(details.getToken());
+        Call<CategoryApiResponse> call = apiService.getCategoryDetails();
+        call.enqueue(new CustomApiCallbackImpl<CategoryApiResponse>(new CustomApiCallback<CategoryApiResponse>() {
+            private static final String TAG = "TAG";
+
+            @Override
+            public void onStarted() {
+                Log.d(TAG, "onStarted: " + "Api call started");
+            }
+
+            @Override
+            public void onSuccess(CategoryApiResponse categoryApiResponse) {
+                bindings.displayUser.setText(String.format("Hello %s", details.getUsername()));
+                generateCategoryList(categoryApiResponse);
+            }
+
+            @Override
+            public void onError() {
+                Log.d(TAG, "onError: " + "Api error");
+            }
+
+            @Override
+            public void onNetworkError() {
+                Log.d(TAG, "onNetworkError: " + "Network error");
+            }
+        }));
+
+    }
+
+//    private void getCategoryApiCall() {
+//        apiService = ClientInstance.getService(details.getToken());
+//        Call<CategoryApiResponse> call = apiService.getCategoryDetails();
+//        call.enqueue(new Callback<CategoryApiResponse>() {
+//            @Override
+//            public void onResponse(Call<CategoryApiResponse> call, Response<CategoryApiResponse> response) {
+//                bindings.displayUser.setText(String.format("Hello %s", details.getUsername()));
+//                generateCategoryList(response.body());
+//            }
+//
+//            @Override
+//            public void onFailure(Call<CategoryApiResponse> call, Throwable t) {
+//                Toast.makeText(LoginRedirectActivity.this, "something went wrong", Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+
     private void generateCategoryList(CategoryApiResponse response){
         adapter = new CategoryAdapter(this,response);
 
